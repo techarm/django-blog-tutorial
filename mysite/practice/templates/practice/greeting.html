@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ご挨拶</title>
+  </head>
+  <body>
+    <h1>こんにちは、{{ name }}さん！</h1>
+    <p>年齢：{{ age }}歳</p>
+
+    <h2>趣味</h2>
+    <ul>
+      {% for hobby in hobbies %}
+      <li>{{ hobby }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

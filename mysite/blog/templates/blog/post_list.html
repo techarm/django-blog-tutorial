@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ブログ記事一覧</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .post {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+      }
+      .post-title {
+        color: #333;
+        margin: 0 0 10px 0;
+      }
+      .post-date {
+        color: #666;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ブログ記事一覧</h1>
+
+    {% for post in posts %}
+    <div class="post">
+      <h2 class="post-title">{{ post.title }}</h2>
+      <p class="post-date">投稿日: {{ post.created_at }}</p>
+      <p>{{ post.content }}</p>
+    </div>
+    {% endfor %}
+    
+    {% if not posts %}
+    <p>まだ記事がありません。</p>
+    {% endif %}
+  </body>
+</html>
