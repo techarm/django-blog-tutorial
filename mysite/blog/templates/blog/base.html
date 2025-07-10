@@ -1,0 +1,61 @@
+{% load static %}
+{% load blog_extras %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Blog{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'blog/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'blog/images/favicon-16x16.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'blog/images/apple-touch-icon.png' %}">
+    <!-- 静的ファイルの読み込み -->
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>
+                <a href="{% url 'post_list' %}">
+                    <img src="{% static 'blog/images/logo.png' %}" alt="My Blog" height="40">
+                    <span>My Blog</span>
+                </a>
+            </h1>
+            <ul>
+                <li><a href="{% url 'post_list' %}">ホーム</a></li>
+                <li><a href="#">記事一覧</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- mainタグ部分を修正 -->
+    <main>
+        <div class="container">
+            <div class="content">
+                {% block content %}
+                <!-- ここに各ページの内容が入ります -->
+                {% endblock %}
+            </div>
+
+            <aside class="sidebar">
+                {% block sidebar %}
+                    {% include 'blog/includes/sidebar.html' %}
+                {% endblock %}
+            </aside>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; {% current_year %} My Blog. All rights reserved.</p>
+        <p>{% greeting %}、訪問ありがとうございます{{ ""|add_mark }}</p>
+    </footer>
+
+    <!-- JavaScriptの読み込み -->
+    <script src="{% static 'blog/js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

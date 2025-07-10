@@ -1,45 +1,47 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ブログ記事一覧</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      .post {
-        border: 1px solid #ddd;
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-      }
-      .post-title {
-        color: #333;
-        margin: 0 0 10px 0;
-      }
-      .post-date {
-        color: #666;
-        font-size: 0.9em;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>ブログ記事一覧</h1>
+{% extends 'blog/base.html' %}
+{% load blog_extras %}
 
-    {% for post in posts %}
-    <div class="post">
-      <h2 class="post-title">{{ post.title }}</h2>
-      <p class="post-date">投稿日: {{ post.created_at }}</p>
-      <p>{{ post.content }}</p>
-    </div>
-    {% endfor %}
-    
-    {% if not posts %}
-    <p>まだ記事がありません。</p>
+{% block title %}ホーム - My Blog{% endblock %}
+
+{% block content %}
+    <!-- ヒーローセクション -->
+    <section class="hero">
+        <h1>Welcome to My Blog</h1>
+        <p>{% greeting %}！Djangoで作られたブログへようこそ。</p>
+    </section>
+
+    <!-- 注目記事 -->
+    {% if featured_posts %}
+    <section class="featured-section">
+        <h2>注目記事</h2>
+        <div class="featured-grid">
+            {% for post in featured_posts %}
+            <div class="featured-post">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.content|truncatechars:100 }}</p>
+                <div class="tags">
+                    {% for tag in post.tags %}
+                    <span class="tag">#{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'post_detail' post_id=post.id %}" class="btn btn-primary">
+                    読む
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
     {% endif %}
-  </body>
-</html>
+
+    <!-- 最新記事 -->
+    <section class="posts-section">
+        <h2>最新記事</h2>
+        <div class="posts-grid">
+            {% for post in posts %}
+                {% include 'blog/includes/post_card.html' %}
+            {% empty %}
+                <p class="no-posts">まだ記事がありません。</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

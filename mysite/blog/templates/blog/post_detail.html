@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+    {% if post %}
+        <article class="post-detail">
+            <h2>{{ post.title }}</h2>
+            <p class="post-meta">投稿日: {{ post.created_at }}</p>
+            <div class="post-body">
+                {{ post.body|linebreaks }}
+            </div>
+            <p><a href="{% url 'post_list' %}">← 記事一覧に戻る</a></p>
+        </article>
+    {% else %}
+        <p>記事が見つかりませんでした。</p>
+        <p><a href="{% url 'post_list' %}">記事一覧に戻る</a></p>
+    {% endif %}
+{% endblock %}

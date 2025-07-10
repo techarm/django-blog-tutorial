@@ -1,0 +1,31 @@
+<div class="sidebar-section">
+    <h3>カテゴリー</h3>
+    <ul class="category-list">
+        <li><a href="#">Python</a></li>
+        <li><a href="#">Django</a></li>
+        <li><a href="#">Web開発</a></li>
+        <li><a href="#">その他</a></li>
+    </ul>
+</div>
+
+<div class="sidebar-section">
+    <h3>最近の投稿</h3>
+    <ul class="recent-posts">
+        {% for post in recent_posts|default:posts|slice:":3" %}
+        <li>
+            <a href="{% url 'post_detail' post_id=post.id %}">
+                {{ post.title|truncatechars:30 }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="sidebar-section">
+    <h3>アーカイブ</h3>
+    <ul class="archive-list">
+        <li><a href="#">2025年7月</a></li>
+        <li><a href="#">2025年6月</a></li>
+        <li><a href="#">2025年5月</a></li>
+    </ul>
+</div>
