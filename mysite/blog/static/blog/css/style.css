@@ -88,32 +88,6 @@ main h2 {
     margin-bottom: 1.5rem;
 }
 
-/* 記事スタイル */
-.post {
-    background: white;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.post:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.post h3 {
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-}
-
-.post-date {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
 /* フッター */
 footer {
     background-color: #34495e;
@@ -130,8 +104,8 @@ footer {
 }
 
 .content {
-    min-width: 0;
     /* グリッドレイアウトのバグ対策 */
+    min-width: 0;
 }
 
 /* サイドバー */
@@ -249,6 +223,21 @@ footer {
     font-size: 0.85rem;
 }
 
+
+/* 記事一覧ページのスタイル */
+.posts-section h2 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 8px;
+    color: #7f8c8d;
+}
+
 /* ポストカード */
 .posts-grid {
     display: grid;
@@ -282,9 +271,29 @@ footer {
     border-radius: 4px;
 }
 
+.date {
+    color: #7f8c8d;
+}
+
+.post-card-title {
+    margin-bottom: 1rem;
+}
+
 .post-card-title a {
     color: #2c3e50;
     text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.post-card-title a:hover {
+    color: #3498db;
+}
+
+.post-card-excerpt {
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
 
 .post-card-footer {
@@ -292,6 +301,56 @@ footer {
     justify-content: space-between;
     align-items: center;
     margin-top: 1.5rem;
+}
+
+.read-more {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.read-more:hover {
+    color: #2980b9;
+    transform: translateX(3px);
+}
+
+/* 記事詳細ページのスタイル */
+.post-detail {
+    background: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-detail h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.post-meta {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.post-body {
+    line-height: 1.8;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.post-body p {
+    margin-bottom: 1.5rem;
+}
+
+.post-detail>p:last-child {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ecf0f1;
 }
 
 /* レスポンシブ対応 */
@@ -303,5 +362,22 @@ footer {
     .sidebar {
         position: static;
         margin-top: 2rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    header ul {
+        gap: 1rem;
     }
 }
