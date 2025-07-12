@@ -8,7 +8,7 @@
             <h2>{{ post.title }}</h2>
             <p class="post-meta">投稿日: {{ post.created_at }}</p>
             <div class="post-body">
-                {{ post.body|linebreaks }}
+                {{ post.content|linebreaks }}
             </div>
             <p><a href="{% url 'post_list' %}">← 記事一覧に戻る</a></p>
         </article>
