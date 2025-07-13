@@ -1,11 +1,17 @@
 from django.contrib import admin
-from .models import Post, Category
+from .models import Post, Category, Tag
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name", "slug", "created_at"]
     prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ["name", "created_at"]
+    search_fields = ["name"]
 
 
 @admin.register(Post)
@@ -15,3 +21,4 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ["title", "content"]
     date_hierarchy = "created_at"
     ordering = ["-created_at"]
+    filter_horizontal = ["tags"]

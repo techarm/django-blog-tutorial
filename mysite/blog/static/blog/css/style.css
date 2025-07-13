@@ -256,7 +256,6 @@ p a {
     font-size: 0.85rem;
 }
 
-
 /* 記事一覧ページのスタイル */
 .posts-section h2 {
     color: #2c3e50;
@@ -373,6 +372,14 @@ p a {
 .post-detail .post-category {
     font-size: 1em;
     margin-bottom: 10px;
+}
+
+.post-detail .post-tags {
+    margin: 20px 0;
+}
+
+.post-detail .tag {
+    font-size: 0.9em;
 }
 
 .post-body {
