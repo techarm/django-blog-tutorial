@@ -6,6 +6,9 @@
     {% if post %}
         <article class="post-detail">
             <h2>{{ post.title }}</h2>
+            {% if post.category %}
+                <p class="post-category">カテゴリー: {{ post.category.name }}</p>
+            {% endif %}
             <p class="post-meta">投稿日: {{ post.created_at }}</p>
             <div class="post-body">
                 {{ post.content|linebreaks }}

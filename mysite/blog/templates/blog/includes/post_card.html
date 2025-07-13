@@ -1,6 +1,10 @@
 <article class="post-card">
     <div class="post-card-header">
-        <span class="category">{{ post.category }}</span>
+        {% if post.category %}
+            <span class="category">{{ post.category.name }}</span>
+        {% else %}
+            <span class="category">未分類</span>
+        {% endif %}
         <span class="date">{{ post.created_at }}</span>
     </div>
 

@@ -1,10 +1,16 @@
 <div class="sidebar-section">
     <h3>カテゴリー</h3>
     <ul class="category-list">
-        <li><a href="#">Python</a></li>
-        <li><a href="#">Django</a></li>
-        <li><a href="#">Web開発</a></li>
-        <li><a href="#">その他</a></li>
+        {% for category in categories %}
+        <li>
+            <a href="{% url 'category_posts' slug=category.slug %}">
+                {{ category.name }}
+            </a>
+            <span class="post-count">({{ category.posts.count }})</span>
+        </li>
+        {% empty %}
+        <li>カテゴリーがありません</li>
+        {% endfor %}
     </ul>
 </div>
 

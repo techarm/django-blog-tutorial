@@ -96,6 +96,11 @@ footer {
     padding: 1rem 0;
 }
 
+p a {
+    color: #3498db;
+    text-decoration: none;
+}
+
 /* コンテナとレイアウト */
 .container {
     display: grid;
@@ -151,6 +156,34 @@ footer {
 
 .sidebar a:hover {
     color: #3498db;
+}
+
+.post-category {
+    color: #007bff;
+    font-size: 0.9em;
+    margin: 5px 0;
+}
+
+/* サイドバーのカテゴリー数表示 */
+.category-list .post-count {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+/* ページヘッダー */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h2 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.page-header .post-count {
+    color: #7f8c8d;
+    font-size: 0.9rem;
 }
 
 /* ヒーローセクション */
@@ -335,6 +368,11 @@ footer {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #ecf0f1;
+}
+
+.post-detail .post-category {
+    font-size: 1em;
+    margin-bottom: 10px;
 }
 
 .post-body {

@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ category.name }}の記事一覧 - My Blog{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2>{{ category.name }}の記事</h2>
+        <p class="post-count">
+            {% if posts %}
+                全{{ posts|length }}件の記事
+            {% else %}
+                このカテゴリーにはまだ記事がありません
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="posts-grid">
+        {% for post in posts %}
+            {% include 'blog/includes/post_card.html' %}
+        {% empty %}
+            <div class="no-posts">
+                <p>{{ category.name }}カテゴリーの記事はまだありません。</p>
+                <p><a href="{% url 'post_list' %}">すべての記事を見る →</a></p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

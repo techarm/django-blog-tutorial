@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path("", views.post_list, name="post_list"),
-    path("post/<int:post_id>/", views.post_detail, name="post_detail"),  # 追加
+    path("post/<int:post_id>/", views.post_detail, name="post_detail"),
+    path("category/<slug:slug>/", views.category_posts, name="category_posts"),
 ]
