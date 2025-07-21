@@ -47,3 +47,55 @@ class PostSearchForm(forms.Form):
             }
         ),
     )
+
+
+class CommentForm(forms.Form):
+    """コメント投稿フォーム"""
+
+    name = forms.CharField(
+        label="お名前",
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "お名前を入力",
+            }
+        ),
+    )
+
+    email = forms.EmailField(
+        label="メールアドレス",
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "your@email.com",
+            }
+        ),
+    )
+
+    content = forms.CharField(
+        label="コメント",
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "rows": 4,
+                "placeholder": "コメントを入力してください",
+            }
+        ),
+    )
+
+    def clean_content(self):
+        """コメント内容のバリデーション"""
+        content = self.cleaned_data["content"]
+
+        # 最小文字数チェック
+        if len(content) < 5:
+            raise forms.ValidationError("コメントは5文字以上で入力してください。")
+
+        # NGワードチェック（例）
+        ng_words = ["spam", "スパム"]
+        for word in ng_words:
+            if word in content.lower():
+                raise forms.ValidationError("不適切な内容が含まれています。")
+
+        return content

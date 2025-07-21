@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-from blog.forms import PostSearchForm
-from .models import Post, Category
+from .models import Post, Category, Comment
+from .forms import PostSearchForm, CommentForm
 
 
 def post_list(request):
@@ -30,10 +31,28 @@ def post_list(request):
 
 
 def post_detail(request, post_id):
-    """記事詳細を表示"""
+    """記事詳細とコメント投稿"""
+    post = get_object_or_404(Post, pk=post_id, is_published=True)
+    comments = post.comments.filter(is_approved=True)
 
-    # 指定されたIDの記事を取得（なければ404エラー）
-    post = get_object_or_404(Post, id=post_id, is_published=True)
+    # コメントフォームの処理
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            # コメントを保存
+            comment = Comment(
+                post=post,
+                name=form.cleaned_data["name"],
+                email=form.cleaned_data["email"],
+                content=form.cleaned_data["content"],
+            )
+            comment.save()
+
+            messages.success(request, "コメントを投稿しました！")
+            # PRGパターン（Post-Redirect-Get）でリダイレクト
+            return redirect("post_detail", post_id=post.id)
+    else:
+        form = CommentForm()
 
     # サイドバー用に最新記事を取得
     recent_posts = (
@@ -48,7 +67,10 @@ def post_detail(request, post_id):
     context = {
         "post": post,
         "posts": recent_posts,  # サイドバー用
-        "categories": categories,  # カテゴリーを追加
+        "categories": categories,  # サイドバー用
+        "comments": comments,
+        "comment_form": form,
+        "comment_count": comments.count(),
     }
     return render(request, "blog/post_detail.html", context)
 

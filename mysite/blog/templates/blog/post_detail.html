@@ -23,6 +23,88 @@
             {% endif %}
             <p><a href="{% url 'post_list' %}">← 記事一覧に戻る</a></p>
         </article>
+
+        <!-- コメントセクション -->
+        <section class="comments-section">
+            <h3>コメント（{{ comment_count }}件）</h3>
+            
+            <!-- コメント一覧 -->
+            <div class="comments-list">
+                {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment-header">
+                        <strong>{{ comment.name }}</strong>
+                        <span class="comment-date">{{ comment.created_at|date:"Y年m月d日 H:i" }}</span>
+                    </div>
+                    <div class="comment-body">
+                        {{ comment.content|linebreaks }}
+                    </div>
+                </div>
+                {% empty %}
+                <p class="no-comments">まだコメントはありません。最初のコメントを投稿してみましょう！</p>
+                {% endfor %}
+            </div>
+            
+            <!-- コメント投稿フォーム -->
+            <div class="comment-form-section">
+                <h4>コメントを投稿</h4>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post" class="comment-form">
+                    {% csrf_token %}
+                    
+                    <!-- エラーメッセージ -->
+                    {% if comment_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ comment_form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        {{ comment_form.name.label_tag }}
+                        {{ comment_form.name }}
+                        {% if comment_form.name.errors %}
+                        <div class="error-message">
+                            {{ comment_form.name.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ comment_form.email.label_tag }}
+                        {{ comment_form.email }}
+                        {% if comment_form.email.errors %}
+                        <div class="error-message">
+                            {{ comment_form.email.errors }}
+                        </div>
+                        {% endif %}
+                        <small class="form-help">メールアドレスは公開されません</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ comment_form.content.label_tag }}
+                        {{ comment_form.content }}
+                        {% if comment_form.content.errors %}
+                        <div class="error-message">
+                            {{ comment_form.content.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        コメントを投稿
+                    </button>
+                </form>
+            </div>
+        </section>
+
     {% else %}
         <p>記事が見つかりませんでした。</p>
         <p><a href="{% url 'post_list' %}">記事一覧に戻る</a></p>

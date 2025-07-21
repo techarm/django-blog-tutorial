@@ -61,3 +61,24 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    """コメントモデル"""
+
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="comments", verbose_name="記事"
+    )
+    name = models.CharField(max_length=50, verbose_name="名前")
+    email = models.EmailField(verbose_name="メールアドレス")
+    content = models.TextField(verbose_name="コメント内容")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="投稿日時")
+    is_approved = models.BooleanField(default=True, verbose_name="承認済み")
+
+    class Meta:
+        verbose_name = "コメント"
+        verbose_name_plural = "コメント"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.name}: {self.content[:20]}"
