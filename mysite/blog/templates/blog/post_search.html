@@ -1,0 +1,89 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}記事検索 - My Blog{% endblock %}
+
+{% block content %}
+<div class="search-page">
+    <div class="search-header">
+        <h2>記事を検索</h2>
+    </div>
+    
+    <!-- 検索フォーム -->
+    <div class="search-form-card">
+        <form method="get" class="search-form">
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.keyword.label_tag }}
+                    {{ form.keyword }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.category.label_tag }}
+                    {{ form.category }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.order_by.label_tag }}
+                    {{ form.order_by }}
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    検索
+                </button>
+                <a href="{% url 'post_search' %}" class="btn btn-secondary">
+                    クリア
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- 検索結果 -->
+    <div class="search-results">
+        {% if keyword %}
+        <h3 class="search-results-title">
+            「{{ keyword }}」の検索結果
+            <span class="result-count">（{{ result_count }}件）</span>
+        </h3>
+        {% endif %}
+        
+        {% if page_obj %}
+            <div class="posts-grid">
+                {% for post in page_obj %}
+                    {% include 'blog/includes/post_card.html' %}
+                {% empty %}
+                    <p class="no-results">検索条件に一致する記事が見つかりませんでした。</p>
+                {% endfor %}
+            </div>
+            
+            <!-- ページネーション -->
+            {% if page_obj.has_other_pages %}
+            <nav class="pagination-nav">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?{% if keyword %}keyword={{ keyword }}&{% endif %}{% if form.category.value %}category={{ form.category.value }}&{% endif %}{% if form.order_by.value %}order_by={{ form.order_by.value }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                            前へ
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <li class="current">
+                        {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                    </li>
+                    
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?{% if keyword %}keyword={{ keyword }}&{% endif %}{% if form.category.value %}category={{ form.category.value }}&{% endif %}{% if form.order_by.value %}order_by={{ form.order_by.value }}&{% endif %}page={{ page_obj.next_page_number }}">
+                            次へ
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

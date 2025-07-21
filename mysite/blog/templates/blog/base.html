@@ -27,13 +27,14 @@
             <ul>
                 <li><a href="{% url 'post_list' %}">ホーム</a></li>
                 <li><a href="#">記事一覧</a></li>
+                <li><a href="{% url 'post_search' %}">検索</a></li>
                 <li><a href="#">About</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- mainタグ部分を修正 -->
-    <main>
+    <!-- categoriesとpostsの有無でクラスを切り替える -->
+    <main class="{% if categories and posts %}with-sidebar{% else %}no-sidebar{% endif %}">
         <div class="container">
             <div class="content">
                 {% block content %}
@@ -41,11 +42,14 @@
                 {% endblock %}
             </div>
 
+            <!-- サイドバーは条件付きで表示 -->
+            {% if categories and posts %}
             <aside class="sidebar">
                 {% block sidebar %}
                     {% include 'blog/includes/sidebar.html' %}
                 {% endblock %}
             </aside>
+            {% endif %}
         </div>
     </main>
 

@@ -1,4 +1,8 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from django.core.paginator import Paginator
+
+from blog.forms import PostSearchForm
 from .models import Post, Category
 
 
@@ -70,3 +74,43 @@ def category_posts(request, slug):
         "total_posts": posts.count(),
     }
     return render(request, "blog/category_posts.html", context)
+
+
+def post_search(request):
+    """記事検索ビュー"""
+    form = PostSearchForm(request.GET or None)
+    posts = Post.objects.filter(is_published=True)
+    keyword = ""  # 初期値を設定
+
+    if form.is_valid():
+        # キーワード検索
+        keyword = form.cleaned_data.get("keyword")
+        if keyword:
+            # Q オブジェクトを使った OR 検索
+            posts = posts.filter(
+                Q(title__icontains=keyword) | Q(content__icontains=keyword)
+            )
+
+        # カテゴリ絞り込み
+        category = form.cleaned_data.get("category")
+        if category:
+            posts = posts.filter(category=category)
+
+        # 並び順
+        order_by = form.cleaned_data.get("order_by")
+        if order_by:
+            posts = posts.order_by(order_by)
+
+    # ページネーション
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "form": form,
+        "page_obj": page_obj,
+        "keyword": keyword,
+        "result_count": posts.count(),
+    }
+
+    return render(request, "blog/post_search.html", context)
