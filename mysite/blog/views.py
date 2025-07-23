@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.db.models.functions import TruncMonth
 from django.core.paginator import Paginator
+from django.views.generic import TemplateView, ListView
 
 from .models import Post, Category, Comment
 from .forms import PostSearchForm, CommentForm
@@ -18,14 +20,24 @@ def post_list(request):
         "-created_at"
     )[:2]
 
-    # カテゴリー一覧を取得
+    # カテゴリー一覧を取得（サイドバー用）
     categories = Category.objects.all().order_by("name")
+
+    # 月別アーカイブを取得（サイドバー用）
+    archives = (
+        Post.objects.filter(is_published=True)
+        .annotate(month=TruncMonth("created_at"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("-month")[:12]
+    )
 
     context = {
         "posts": posts,
         "featured_posts": featured_posts,
         "total_posts": posts.count(),
         "categories": categories,  # カテゴリーを追加
+        "archives": archives,  # 追加
     }
     return render(request, "blog/post_list.html", context)
 
@@ -64,10 +76,20 @@ def post_detail(request, post_id):
     # カテゴリー一覧を取得
     categories = Category.objects.all().order_by("name")
 
+    # 月別アーカイブを取得
+    archives = (
+        Post.objects.filter(is_published=True)
+        .annotate(month=TruncMonth("created_at"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("-month")[:12]
+    )
+
     context = {
         "post": post,
         "posts": recent_posts,  # サイドバー用
         "categories": categories,  # サイドバー用
+        "archives": archives,  # 追加
         "comments": comments,
         "comment_form": form,
         "comment_count": comments.count(),
@@ -89,10 +111,20 @@ def category_posts(request, slug):
     # すべてのカテゴリー（サイドバー用）
     categories = Category.objects.all().order_by("name")
 
+    # 月別アーカイブを取得（サイドバー用）
+    archives = (
+        Post.objects.filter(is_published=True)
+        .annotate(month=TruncMonth("created_at"))
+        .values("month")
+        .annotate(count=Count("id"))
+        .order_by("-month")[:12]
+    )
+
     context = {
         "category": category,
         "posts": posts,
         "categories": categories,
+        "archives": archives,
         "total_posts": posts.count(),
     }
     return render(request, "blog/category_posts.html", context)
@@ -136,3 +168,62 @@ def post_search(request):
     }
 
     return render(request, "blog/post_search.html", context)
+
+
+class AboutView(TemplateView):
+    """Aboutページ"""
+
+    template_name = "blog/about.html"  # 使うテンプレートを指定
+
+    def get_context_data(self, **kwargs):
+        # 親クラスのメソッドを呼ぶ（おまじないのようなもの）
+        context = super().get_context_data(**kwargs)
+
+        # テンプレートに渡したいデータを追加
+        context["title"] = "このブログについて"
+        context["author"] = "techarm"
+        context["created_year"] = 2025
+
+        return context
+
+
+class MonthArchiveView(ListView):
+    """月別アーカイブ"""
+
+    model = Post  # どのモデルを表示するか
+    template_name = "blog/archive_month.html"  # 使うテンプレート
+    context_object_name = "posts"  # テンプレートで使う変数名
+    paginate_by = 10  # 1ページに表示する件数
+
+    def get_queryset(self):
+        """表示するデータを取得"""
+        # URLから年月を取得
+        year = self.kwargs.get("year")
+        month = self.kwargs.get("month")
+
+        # 該当月の公開記事を取得
+        return Post.objects.filter(
+            is_published=True, created_at__year=year, created_at__month=month
+        ).order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        """テンプレートに渡すデータを追加"""
+        context = super().get_context_data(**kwargs)
+
+        # 年月の情報を追加
+        context["year"] = self.kwargs.get("year")
+        context["month"] = self.kwargs.get("month")
+
+        # サイドバー用のカテゴリー
+        context["categories"] = Category.objects.all().order_by("name")
+
+        # 月別アーカイブを取得
+        context["archives"] = (
+            Post.objects.filter(is_published=True)
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("-month")[:12]
+        )
+
+        return context

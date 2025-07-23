@@ -27,11 +27,19 @@
     </ul>
 </div>
 
+<!-- 既存のカテゴリーセクションの後に追加 -->
 <div class="sidebar-section">
     <h3>アーカイブ</h3>
     <ul class="archive-list">
-        <li><a href="#">2025年7月</a></li>
-        <li><a href="#">2025年6月</a></li>
-        <li><a href="#">2025年5月</a></li>
+        {% for archive in archives %}
+        <li>
+            <a href="{% url 'archive_month' year=archive.month.year month=archive.month.month %}">
+                {{ archive.month|date:"Y年n月" }}
+            </a>
+            <span class="post-count">({{ archive.count }})</span>
+        </li>
+        {% empty %}
+        <li>アーカイブがありません</li>
+        {% endfor %}
     </ul>
 </div>

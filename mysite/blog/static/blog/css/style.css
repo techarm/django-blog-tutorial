@@ -633,6 +633,59 @@ main.no-sidebar .content {
     font-size: 0.875rem;
 }
 
+/* Aboutページ */
+.about-page {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-page h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.about-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    line-height: 1.8;
+}
+
+.about-content h3 {
+    color: #3498db;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.about-content ul {
+    list-style-position: inside;
+    margin-left: 1rem;
+}
+
+.about-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* アーカイブページ */
+.archive-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.archive-page h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.archive-page .post-count {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .container {

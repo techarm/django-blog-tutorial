@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}About - My Blog{% endblock %}
+
+{% block content %}
+<div class="about-page">
+    <h2>{{ title }}</h2>
+    
+    <div class="about-content">
+        <p>こんにちは！{{ author }}です。</p>
+
+        <p>このブログは、Djangoの学習過程を記録するために{{ created_year }}年に開設しました。</p>
+        
+        <h3>学習している内容</h3>
+        <ul>
+            <li>Djangoの基本的な使い方</li>
+            <li>MVTパターンの理解</li>
+            <li>データベース操作（ORM）</li>
+            <li>テンプレートシステム</li>
+            <li>フォーム処理</li>
+            <li>そして今、クラスベースビュー！</li>
+        </ul>
+        
+        <p>一緒にDjangoを学んでいきましょう！</p>
+    </div>
+</div>
+{% endblock %}

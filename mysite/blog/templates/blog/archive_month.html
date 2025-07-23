@@ -1,0 +1,48 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ year }}年{{ month }}月の記事 - My Blog{% endblock %}
+
+{% block content %}
+<div class="archive-page">
+    <h2>{{ year }}年{{ month }}月の記事</h2>
+    
+    <p class="post-count">
+        {% if posts %}
+            {{ posts|length }}件の記事が見つかりました
+        {% else %}
+            この月の記事はありません
+        {% endif %}
+    </p>
+    
+    <div class="posts-grid">
+        {% for post in posts %}
+            {% include 'blog/includes/post_card.html' %}
+        {% empty %}
+            <p>{{ year }}年{{ month }}月に投稿された記事はありません。</p>
+        {% endfor %}
+    </div>
+    
+    <!-- ページネーション（ListViewが自動的に用意してくれる！） -->
+    {% if is_paginated %}
+    <nav class="pagination-nav">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+            </li>
+            {% endif %}
+            
+            <li class="current">
+                {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            </li>
+            
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
