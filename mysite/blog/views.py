@@ -7,6 +7,7 @@ from django.views.generic import TemplateView, ListView, DetailView
 
 from .models import Post, Category, Comment
 from .forms import PostSearchForm, CommentForm
+from .mixins import CategoryListMixin, SidebarMixin
 
 
 def post_list(request):
@@ -187,7 +188,7 @@ class AboutView(TemplateView):
         return context
 
 
-class MonthArchiveView(ListView):
+class MonthArchiveView(SidebarMixin, ListView):
     """月別アーカイブ"""
 
     model = Post  # どのモデルを表示するか
@@ -214,22 +215,10 @@ class MonthArchiveView(ListView):
         context["year"] = self.kwargs.get("year")
         context["month"] = self.kwargs.get("month")
 
-        # サイドバー用のカテゴリー
-        context["categories"] = Category.objects.all().order_by("name")
-
-        # 月別アーカイブを取得
-        context["archives"] = (
-            Post.objects.filter(is_published=True)
-            .annotate(month=TruncMonth("created_at"))
-            .values("month")
-            .annotate(count=Count("id"))
-            .order_by("-month")[:12]
-        )
-
         return context
 
 
-class PostDetailView(DetailView):
+class PostDetailView(SidebarMixin, DetailView):
     """記事詳細とコメント（CBV版）"""
 
     model = Post
@@ -257,14 +246,6 @@ class PostDetailView(DetailView):
             .exclude(id=self.object.id)
             .order_by("-created_at")[:5]
         )
-        context["categories"] = Category.objects.all().order_by("name")
-        context["archives"] = (
-            Post.objects.filter(is_published=True)
-            .annotate(month=TruncMonth("created_at"))
-            .values("month")
-            .annotate(count=Count("id"))
-            .order_by("-month")[:12]
-        )
 
         return context
 
@@ -289,3 +270,29 @@ class PostDetailView(DetailView):
         context = self.get_context_data()
         context["comment_form"] = form
         return self.render_to_response(context)
+
+
+class PostListView(SidebarMixin, ListView):
+    """記事一覧（CBV版）"""
+
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "posts"
+    paginate_by = 2
+
+    def get_queryset(self):
+        # 公開記事のみ、新しい順
+        return Post.objects.filter(is_published=True).order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # 注目記事
+        context["featured_posts"] = Post.objects.filter(
+            is_published=True, is_featured=True
+        ).order_by("-created_at")[:2]
+
+        # 総記事数
+        context["total_posts"] = self.get_queryset().count()
+
+        return context

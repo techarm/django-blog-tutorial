@@ -43,5 +43,33 @@
                 <p class="no-posts">まだ記事がありません。</p>
             {% endfor %}
         </div>
+
+        <!-- ページネーション -->
+        {% if is_paginated %}
+        <nav class="pagination-nav">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">
+                        <i class="fas fa-chevron-left"></i> 前へ
+                    </a>
+                </li>
+                {% endif %}
+                
+                <!-- ページ番号の表示 -->
+                <li class="page-info">
+                    ページ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                </li>
+                
+                {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">
+                        次へ <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     </section>
 {% endblock %}
