@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.db.models import Q, Count
 from django.db.models.functions import TruncMonth
 from django.core.paginator import Paginator
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
 from .models import Post, Category, Comment
 from .forms import PostSearchForm, CommentForm
@@ -227,3 +227,65 @@ class MonthArchiveView(ListView):
         )
 
         return context
+
+
+class PostDetailView(DetailView):
+    """記事詳細とコメント（CBV版）"""
+
+    model = Post
+    template_name = "blog/post_detail.html"
+    context_object_name = "post"
+    pk_url_kwarg = "post_id"  # URLのパラメータ名を指定
+
+    def get_queryset(self):
+        """公開記事のみ表示"""
+        return super().get_queryset().filter(is_published=True)
+
+    def get_context_data(self, **kwargs):
+        """テンプレートに渡すデータを準備"""
+        context = super().get_context_data(**kwargs)
+
+        # コメント関連
+        comments = self.object.comments.filter(is_approved=True)
+        context["comments"] = comments
+        context["comment_count"] = comments.count()
+        context["comment_form"] = CommentForm()
+
+        # サイドバー用
+        context["posts"] = (
+            Post.objects.filter(is_published=True)
+            .exclude(id=self.object.id)
+            .order_by("-created_at")[:5]
+        )
+        context["categories"] = Category.objects.all().order_by("name")
+        context["archives"] = (
+            Post.objects.filter(is_published=True)
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("-month")[:12]
+        )
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """コメント投稿の処理"""
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comment = Comment(
+                post=self.object,
+                name=form.cleaned_data["name"],
+                email=form.cleaned_data["email"],
+                content=form.cleaned_data["content"],
+            )
+            comment.save()
+
+            messages.success(request, "コメントを投稿しました！")
+            return redirect("post_detail", post_id=self.object.id)
+
+        # エラーがある場合
+        context = self.get_context_data()
+        context["comment_form"] = form
+        return self.render_to_response(context)
