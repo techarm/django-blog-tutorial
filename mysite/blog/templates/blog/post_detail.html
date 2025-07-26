@@ -53,15 +53,7 @@
             <!-- コメント投稿フォーム -->
             <div class="comment-form-section">
                 <h4>コメントを投稿</h4>
-                
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                {% endif %}
-                
+
                 <form method="post" class="comment-form">
                     {% csrf_token %}
                     

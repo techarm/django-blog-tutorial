@@ -26,8 +26,20 @@
             {% endfor %}
         </div>
         {% endif %}
-        <a href="{% url 'post_detail' post_id=post.id %}" class="read-more">
-            続きを読む →
-        </a>
+        
+        <div class="post-actions">
+            <a href="{% url 'post_detail' post_id=post.pk %}" class="read-more">
+                続きを読む →
+            </a>
+            <!-- 管理リンクを追加 -->
+            <div class="admin-actions">
+                <a href="{% url 'post_edit' pk=post.pk %}" class="btn-link btn-edit">
+                    編集
+                </a>
+                <a href="{% url 'post_delete' pk=post.pk %}" class="btn-link btn-delete">
+                    削除
+                </a>
+            </div>
+        </div>
     </div>
 </article>

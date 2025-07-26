@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}記事の削除確認 - My Blog{% endblock %}
+
+{% block content %}
+<div class="delete-confirm-page">
+    <div class="delete-confirm-container">
+        <h2>記事の削除確認</h2>
+        
+        <div class="delete-warning">
+            <p>以下の記事を削除しようとしています：</p>
+            
+            <div class="post-info">
+                <h3>{{ post.title }}</h3>
+                <p class="post-meta">
+                    カテゴリー: {{ post.category|default:"未分類" }} | 
+                    作成日: {{ post.created_at|date:"Y年m月d日" }}
+                </p>
+            </div>
+            
+            <p class="warning-text">
+                この操作は取り消せません。本当に削除しますか？
+            </p>
+        </div>
+        
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？');">
+                    削除する
+                </button>
+                <a href="{% url 'post_list' %}" class="btn btn-secondary">
+                    キャンセル
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

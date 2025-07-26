@@ -26,8 +26,8 @@
             </h1>
             <ul>
                 <li><a href="{% url 'post_list' %}">ホーム</a></li>
-                <li><a href="#">記事一覧</a></li>
                 <li><a href="{% url 'post_search' %}">検索</a></li>
+                <li><a href="{% url 'post_create' %}">新規投稿</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
             </ul>
         </nav>
@@ -35,6 +35,18 @@
 
     <!-- categoriesとpostsの有無でクラスを切り替える -->
     <main class="{% if categories and posts %}with-sidebar{% else %}no-sidebar{% endif %}">
+        <!-- メッセージ表示エリア -->
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
         <div class="container">
             <div class="content">
                 {% block content %}

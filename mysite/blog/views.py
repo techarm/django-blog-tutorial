@@ -10,6 +10,7 @@ from django.views.generic import (
     DetailView,
     CreateView,
     UpdateView,
+    DeleteView,
 )
 
 from .models import Post, Category, Comment
@@ -345,3 +346,15 @@ class PostUpdateView(UpdateView):
         context["page_title"] = f"記事編集: {self.object.title}"
         context["button_text"] = "更新"
         return context
+
+
+class PostDeleteView(DeleteView):
+    """記事削除ビュー"""
+
+    model = Post
+    template_name = "blog/post_confirm_delete.html"
+
+    def get_success_url(self):
+        """削除成功時のリダイレクト先"""
+        messages.success(self.request, "記事を削除しました。")
+        return reverse_lazy("post_list")
