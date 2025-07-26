@@ -9,6 +9,7 @@ from django.views.generic import (
     ListView,
     DetailView,
     CreateView,
+    UpdateView,
 )
 
 from .models import Post, Category, Comment
@@ -321,4 +322,26 @@ class PostCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context["page_title"] = "新規記事作成"
         context["button_text"] = "作成"
+        return context
+
+
+class PostUpdateView(UpdateView):
+    """記事編集ビュー"""
+
+    model = Post
+    form_class = PostForm
+    template_name = "blog/post_form.html"
+
+    def get_success_url(self):
+        """更新成功時のリダイレクト先"""
+        return reverse_lazy("post_detail", kwargs={"post_id": self.object.pk})
+
+    def form_valid(self, form):
+        messages.success(self.request, "記事を更新しました！")
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = f"記事編集: {self.object.title}"
+        context["button_text"] = "更新"
         return context

@@ -22,6 +22,11 @@
                 </div>
             {% endif %}
             <p><a href="{% url 'post_list' %}">← 記事一覧に戻る</a></p>
+            <div class="post-actions">
+                <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-primary">
+                    編集
+                </a>
+            </div>
         </article>
 
         <!-- コメントセクション -->
