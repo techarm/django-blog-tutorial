@@ -136,3 +136,35 @@ class PostForm(forms.ModelForm):
             "tags": "複数選択できます",
             "is_published": "チェックを外すと下書きとして保存されます",
         }
+
+    def clean_title(self):
+        """タイトルのバリデーション"""
+        title = self.cleaned_data.get("title")
+
+        # 最小文字数チェック
+        if len(title) < 5:
+            raise forms.ValidationError("タイトルは5文字以上で入力してください。")
+
+        # NGワードチェック
+        ng_words = ["test", "テスト"]
+        for word in ng_words:
+            if word.lower() in title.lower():
+                raise forms.ValidationError(
+                    "タイトルに使用できない単語が含まれています。"
+                )
+
+        return title
+
+    def clean(self):
+        """フォーム全体のバリデーション"""
+        cleaned_data = super().clean()
+        is_published = cleaned_data.get("is_published")
+        category = cleaned_data.get("category")
+
+        # 公開する場合はカテゴリー必須
+        if is_published and not category:
+            raise forms.ValidationError(
+                "公開する記事にはカテゴリーを設定してください。"
+            )
+
+        return cleaned_data
