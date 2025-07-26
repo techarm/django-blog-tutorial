@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category
+from .models import Category, Post
 
 
 class PostSearchForm(forms.Form):
@@ -99,3 +99,40 @@ class CommentForm(forms.Form):
                 raise forms.ValidationError("不適切な内容が含まれています。")
 
         return content
+
+
+class PostForm(forms.ModelForm):
+    """記事作成・編集フォーム"""
+
+    class Meta:
+        model = Post
+        fields = ["title", "content", "category", "tags", "is_featured", "is_published"]
+        widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "記事のタイトルを入力"}
+            ),
+            "content": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 10,
+                    "placeholder": "記事の本文を入力",
+                }
+            ),
+            "category": forms.Select(attrs={"class": "form-control"}),
+            "tags": forms.CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
+            "is_featured": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            "is_published": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+        labels = {
+            "title": "タイトル",
+            "content": "本文",
+            "category": "カテゴリー",
+            "tags": "タグ",
+            "is_featured": "注目記事にする",
+            "is_published": "公開する",
+        }
+        help_texts = {
+            "title": "魅力的なタイトルを付けましょう",
+            "tags": "複数選択できます",
+            "is_published": "チェックを外すと下書きとして保存されます",
+        }

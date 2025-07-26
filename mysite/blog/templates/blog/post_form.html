@@ -1,0 +1,97 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - My Blog{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="form-header">
+        <h2>{{ page_title }}</h2>
+    </div>
+    
+    <div class="form-container">
+        <form method="post" class="post-form">
+            {% csrf_token %}
+            
+            <!-- エラーメッセージ -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <!-- タイトル -->
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {% if form.title.help_text %}
+                    <small class="form-help">{{ form.title.help_text }}</small>
+                {% endif %}
+                {% if form.title.errors %}
+                    <div class="error-message">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- 本文 -->
+            <div class="form-group">
+                {{ form.content.label_tag }}
+                {{ form.content }}
+                {% if form.content.help_text %}
+                    <small class="form-help">{{ form.content.help_text }}</small>
+                {% endif %}
+                {% if form.content.errors %}
+                    <div class="error-message">{{ form.content.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- カテゴリー -->
+            <div class="form-group">
+                {{ form.category.label_tag }}
+                {{ form.category }}
+                {% if form.category.errors %}
+                    <div class="error-message">{{ form.category.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- タグ -->
+            <div class="form-group">
+                {{ form.tags.label_tag }}
+                <div class="checkbox-group">
+                    {{ form.tags }}
+                </div>
+                {% if form.tags.help_text %}
+                    <small class="form-help">{{ form.tags.help_text }}</small>
+                {% endif %}
+                {% if form.tags.errors %}
+                    <div class="error-message">{{ form.tags.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- オプション -->
+            <div class="form-group">
+                <div class="form-check">
+                    {{ form.is_featured }}
+                    {{ form.is_featured.label_tag }}
+                </div>
+                <div class="form-check">
+                    {{ form.is_published }}
+                    {{ form.is_published.label_tag }}
+                    {% if form.is_published.help_text %}
+                        <small class="form-help">{{ form.is_published.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- ボタン -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    {{ button_text }}
+                </button>
+                <a href="{% url 'post_list' %}" class="btn btn-secondary">
+                    キャンセル
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

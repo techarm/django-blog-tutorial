@@ -3,11 +3,17 @@ from django.contrib import messages
 from django.db.models import Q, Count
 from django.db.models.functions import TruncMonth
 from django.core.paginator import Paginator
-from django.views.generic import TemplateView, ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    DetailView,
+    CreateView,
+)
 
 from .models import Post, Category, Comment
-from .forms import PostSearchForm, CommentForm
-from .mixins import CategoryListMixin, SidebarMixin
+from .forms import PostSearchForm, CommentForm, PostForm
+from .mixins import SidebarMixin
 
 
 def post_list(request):
@@ -295,4 +301,24 @@ class PostListView(SidebarMixin, ListView):
         # 総記事数
         context["total_posts"] = self.get_queryset().count()
 
+        return context
+
+
+class PostCreateView(CreateView):
+    """記事作成ビュー"""
+
+    model = Post
+    form_class = PostForm
+    template_name = "blog/post_form.html"
+    success_url = reverse_lazy("post_list")
+
+    def form_valid(self, form):
+        """フォームのバリデーション成功時"""
+        messages.success(self.request, "記事を作成しました！")
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "新規記事作成"
+        context["button_text"] = "作成"
         return context
