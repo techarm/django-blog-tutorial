@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // コンソールにメッセージ
-    console.log('Djangoブログへようこそ！');
+    // フォームの二重送信防止
+    const forms = document.querySelectorAll('.post-form, .delete-form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            const submitButton = form.querySelector('button[type="submit"]');
+            // ボタンを無効化
+            submitButton.disabled = true;
+            submitButton.textContent = '処理中...';
+        });
+    });
 });
