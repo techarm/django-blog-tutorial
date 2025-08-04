@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from markdownx.models import MarkdownxField
 
 
 class Category(models.Model):
@@ -37,9 +39,17 @@ class Post(models.Model):
     """ブログ記事のモデル"""
 
     title = models.CharField(max_length=200, verbose_name="タイトル")
-    content = models.TextField(verbose_name="本文")
+    content = MarkdownxField(verbose_name="本文")  # TextFieldから変更
     is_featured = models.BooleanField(default=False, verbose_name="注目記事")
     is_published = models.BooleanField(default=False, verbose_name="公開状態")
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="posts",
+        verbose_name="著者",
+        null=True,
+        blank=True,
+    )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,

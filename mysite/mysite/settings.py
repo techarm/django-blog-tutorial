@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "markdownx",
     "practice",
     "blog",
 ]
@@ -122,3 +123,32 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Markdownx設定
+MARKDOWNX_EDITOR_RESIZABLE = True  # エディタのサイズ変更を許可
+MARKDOWNX_IMAGE_UPLOAD = True  # 画像アップロード機能を有効化
+MARKDOWNX_UPLOAD_URLS_PATH = "/markdownx/upload/"  # アップロードURLパス
+MARKDOWNX_UPLOAD_CONTENT_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+]  # 許可する画像形式
+
+# メディアファイルの設定（画像アップロード用）
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# プレビューのスタイル設定
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    "markdown.extensions.extra",  # テーブル、脚注などの拡張機能
+    "markdown.extensions.codehilite",  # コードのシンタックスハイライト
+    "markdown.extensions.toc",  # 目次生成機能
+]
+
+MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
+    "markdown.extensions.codehilite": {
+        "use_pygments": True,  # Pygmentsを使用してハイライト
+        "noclasses": True,  # インラインスタイルを使う
+        "pygments_style": "solarized-light",  # 他のスタイルはこちら: https://pygments.org/styles/
+    }
+}

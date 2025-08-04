@@ -1,4 +1,5 @@
 from django import forms
+from markdownx.widgets import MarkdownxWidget
 from .models import Category, Post
 
 
@@ -111,11 +112,10 @@ class PostForm(forms.ModelForm):
             "title": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": "記事のタイトルを入力"}
             ),
-            "content": forms.Textarea(
+            "content": MarkdownxWidget(  # 変更
                 attrs={
                     "class": "form-control",
-                    "rows": 10,
-                    "placeholder": "記事の本文を入力",
+                    "placeholder": "Markdownで記事を書きます...\n\n# 見出し\n**強調**\n- リスト",
                 }
             ),
             "category": forms.Select(attrs={"class": "form-control"}),
@@ -135,6 +135,7 @@ class PostForm(forms.ModelForm):
             "title": "魅力的なタイトルを付けましょう",
             "tags": "複数選択できます",
             "is_published": "チェックを外すと下書きとして保存されます",
+            "content": "Markdown記法が使えます: # 見出し、**太字**、*斜体*、[リンク](URL)、![画像](URL)",
         }
 
     def clean_title(self):

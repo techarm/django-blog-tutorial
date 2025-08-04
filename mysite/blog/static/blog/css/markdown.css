@@ -1,0 +1,298 @@
+/* Markdownエディタ */
+.form-page.markdown-editor {
+    max-width: 1400px;
+}
+
+.markdownx {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.markdownx-editor {
+    flex: 1;
+    min-height: 500px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.markdownx-editor:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.markdownx-preview {
+    flex: 1;
+    min-height: 500px;
+    padding: 2rem;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+/* Markdown表示スタイル */
+.markdownx-preview,
+.markdown-content,
+.post-body {
+
+    /* 見出し */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #2c3e50;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+
+    h1:first-child,
+    h2:first-child,
+    h3:first-child {
+        margin-top: 0;
+    }
+
+    h1 {
+        font-size: 2rem;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 0.5rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    /* パラグラフ */
+    p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+        color: #555;
+        font-size: 1.1rem;
+    }
+
+    /* リンク */
+    a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    /* コードブロック */
+    pre {
+        background: #f6f8fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    /* Pygments用のコンテナ */
+    .codehilite {
+        background: #f6f8fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+    }
+
+    .codehilite pre {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+    }
+
+    /* インラインコード */
+    code {
+        background: #f6f8fa;
+        color: #e74c3c;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        border: 1px solid #e1e8ed;
+    }
+
+    pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+        border: none;
+        font-size: inherit;
+    }
+
+    /* 引用 */
+    blockquote {
+        border-left: 4px solid #3498db;
+        background: #f8f9fa;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        color: #7f8c8d;
+        border-radius: 0 4px 4px 0;
+    }
+
+    blockquote p {
+        margin-bottom: 1rem;
+    }
+
+    blockquote p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* リスト */
+    ul,
+    ol {
+        margin: 1.5rem 0;
+        padding-left: 2rem;
+    }
+
+    li {
+        margin: 0.5rem 0;
+        line-height: 1.8;
+        color: #555;
+    }
+
+    ul ul,
+    ol ol,
+    ul ol,
+    ol ul {
+        margin: 0.5rem 0;
+    }
+
+    /* テーブル */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    th {
+        background: #f8f9fa;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid #ddd;
+    }
+
+    tr:hover {
+        background: rgba(52, 152, 219, 0.05);
+    }
+
+    /* 画像 */
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 水平線 */
+    hr {
+        border: none;
+        height: 2px;
+        background: #ecf0f1;
+        margin: 2rem 0;
+    }
+
+    /* 強調 */
+    strong,
+    b {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    em,
+    i {
+        font-style: italic;
+    }
+}
+
+/* レスポンシブ */
+@media (max-width: 1024px) {
+    .markdownx {
+        flex-direction: column;
+    }
+
+    .markdownx-editor,
+    .markdownx-preview {
+        width: 100%;
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .markdownx-preview,
+    .markdown-content,
+    .post-body {
+        h1 {
+            font-size: 1.75rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+
+        table {
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 0.5rem;
+        }
+    }
+
+    .markdownx-editor {
+        font-size: 13px;
+        padding: 1rem;
+    }
+
+    .markdownx-preview {
+        padding: 1.5rem;
+    }
+}

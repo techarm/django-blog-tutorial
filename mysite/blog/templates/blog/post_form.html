@@ -3,10 +3,18 @@
 
 {% block title %}{{ page_title }} - My Blog{% endblock %}
 
+{% block extra_css %}
+{{ form.media.css }}
+<link rel="stylesheet" href="{% static 'blog/css/markdown.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="form-page">
+<div class="form-page markdown-editor">
     <div class="form-header">
         <h2>{{ page_title }}</h2>
+        <p class="form-description">
+            Markdownで記事を書きましょう。左側に入力すると、右側にプレビューが表示されます。
+        </p>
     </div>
     
     <div class="form-container">
@@ -32,13 +40,13 @@
                 {% endif %}
             </div>
             
-            <!-- 本文 -->
+            <!-- 本文（Markdownエディタ） -->
             <div class="form-group">
                 {{ form.content.label_tag }}
-                {{ form.content }}
                 {% if form.content.help_text %}
                     <small class="form-help">{{ form.content.help_text }}</small>
                 {% endif %}
+                {{ form.content }}
                 {% if form.content.errors %}
                     <div class="error-message">{{ form.content.errors }}</div>
                 {% endif %}
@@ -94,4 +102,8 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{{ form.media.js }}
 {% endblock %}

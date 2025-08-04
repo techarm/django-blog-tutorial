@@ -1,6 +1,12 @@
 {% extends 'blog/base.html' %}
+{% load static %}
+{% load markdown_extras %}
 
 {% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'blog/css/markdown.css' %}">
+{% endblock %}
 
 {% block content %}
     {% if post %}
@@ -9,9 +15,14 @@
             {% if post.category %}
                 <p class="post-category">カテゴリー: {{ post.category.name }}</p>
             {% endif %}
-            <p class="post-meta">投稿日: {{ post.created_at }}</p>
+            <p class="post-meta">
+                投稿日: {{ post.created_at }}
+                {% if post.author %}
+                    | 著者: {{ post.author.username }}
+                {% endif %}
+            </p>
             <div class="post-body">
-                {{ post.content|linebreaks }}
+                {{ post.content|markdown_to_html }}
             </div>
             {% if post.tags.exists %}
                 <div class="post-tags">
