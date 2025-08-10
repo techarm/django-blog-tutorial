@@ -27,8 +27,19 @@
             <ul>
                 <li><a href="{% url 'post_list' %}">ホーム</a></li>
                 <li><a href="{% url 'post_search' %}">検索</a></li>
-                <li><a href="{% url 'post_create' %}">新規投稿</a></li>
-                <li><a href="{% url 'about' %}">About</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'post_create' %}">新規投稿</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn">ログアウト</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'login' %}">ログイン</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

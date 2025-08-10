@@ -872,6 +872,22 @@ main.no-sidebar .content {
     opacity: 0.8;
 }
 
+.logout-btn {
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+}
+
+.logout-btn:hover {
+    opacity: 0.8;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .container {

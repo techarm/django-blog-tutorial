@@ -33,15 +33,18 @@
             <a href="{% url 'post_detail' post_id=post.pk %}" class="read-more">
                 続きを読む →
             </a>
-            <!-- 管理リンクを追加 -->
-            <div class="admin-actions">
-                <a href="{% url 'post_edit' pk=post.pk %}" class="btn-link btn-edit">
-                    編集
-                </a>
-                <a href="{% url 'post_delete' pk=post.pk %}" class="btn-link btn-delete">
-                    削除
-                </a>
-            </div>
+            {% if user.is_authenticated %}
+                {% if post.author == user or user.is_superuser %}
+                    <div class="admin-actions">
+                        <a href="{% url 'post_edit' pk=post.pk %}" class="btn-link btn-edit">
+                            編集
+                        </a>
+                        <a href="{% url 'post_delete' pk=post.pk %}" class="btn-link btn-delete">
+                            削除
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 </article>

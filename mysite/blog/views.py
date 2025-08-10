@@ -4,6 +4,7 @@ from django.db.models import Q, Count
 from django.db.models.functions import TruncMonth
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     TemplateView,
     ListView,
@@ -12,7 +13,6 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-
 from .models import Post, Category, Comment
 from .forms import PostSearchForm, CommentForm, PostForm
 from .mixins import SidebarMixin
@@ -306,8 +306,8 @@ class PostListView(SidebarMixin, ListView):
         return context
 
 
-class PostCreateView(CreateView):
-    """記事作成ビュー"""
+class PostCreateView(LoginRequiredMixin, CreateView):
+    """記事作成ビュー（ログイン必須）"""
 
     model = Post
     form_class = PostForm
@@ -316,6 +316,8 @@ class PostCreateView(CreateView):
 
     def form_valid(self, form):
         """フォームのバリデーション成功時"""
+        # 著者を現在のユーザーに設定
+        form.instance.author = self.request.user
         messages.success(self.request, "記事を作成しました！")
         return super().form_valid(form)
 
@@ -326,12 +328,18 @@ class PostCreateView(CreateView):
         return context
 
 
-class PostUpdateView(UpdateView):
-    """記事編集ビュー"""
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """記事編集ビュー（著者またはスーパーユーザーのみ）"""
 
     model = Post
     form_class = PostForm
     template_name = "blog/post_form.html"
+
+    def test_func(self):
+        """編集権限のチェック"""
+        post = self.get_object()
+        # 著者本人またはスーパーユーザーのみ編集可能
+        return post.author == self.request.user or self.request.user.is_superuser
 
     def get_success_url(self):
         """更新成功時のリダイレクト先"""
@@ -348,11 +356,16 @@ class PostUpdateView(UpdateView):
         return context
 
 
-class PostDeleteView(DeleteView):
-    """記事削除ビュー"""
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """記事削除ビュー（著者またはスーパーユーザーのみ）"""
 
     model = Post
     template_name = "blog/post_confirm_delete.html"
+
+    def test_func(self):
+        """削除権限のチェック"""
+        post = self.get_object()
+        return post.author == self.request.user or self.request.user.is_superuser
 
     def get_success_url(self):
         """削除成功時のリダイレクト先"""

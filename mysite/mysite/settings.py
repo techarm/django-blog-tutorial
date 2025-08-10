@@ -152,3 +152,8 @@ MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
         "pygments_style": "solarized-light",  # 他のスタイルはこちら: https://pygments.org/styles/
     }
 }
+
+# ログイン・ログアウト後のリダイレクト先
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "post_list"
+LOGOUT_REDIRECT_URL = "post_list"
