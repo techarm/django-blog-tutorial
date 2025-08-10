@@ -1,3 +1,5 @@
+{% load markdown_extras %}
+
 <article class="post-card">
     <div class="post-card-header">
         {% if post.category %}
@@ -15,7 +17,7 @@
     </h3>
 
     <p class="post-card-excerpt">
-        {{ post.content|truncatechars:120 }}
+        {{ post.content|markdown_to_html|striptags|truncatewords:30 }}
     </p>
 
     <div class="post-card-footer">
