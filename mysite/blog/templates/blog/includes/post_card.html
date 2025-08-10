@@ -17,7 +17,7 @@
     </h3>
 
     <p class="post-card-excerpt">
-        {{ post.content|markdown_to_html|striptags|truncatewords:30 }}
+        {{ post.content|markdown_to_html|striptags|truncatechars:120 }}
     </p>
 
     <div class="post-card-footer">
