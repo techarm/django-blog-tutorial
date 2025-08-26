@@ -6,9 +6,8 @@
 
 このプロジェクトは以下のステップバイステップチュートリアルで詳しく解説されています：
 
-### **[🔗 Django チュートリアルシリーズ全記事はこちら](https://techarm.dev/series/django)**
+**[🔗 Django チュートリアルシリーズ全記事はこちら](https://techarm.dev/series/django)**
 
----
 
 ## 📖 各記事とブランチ対応表
 
@@ -92,22 +91,16 @@ git checkout main
 
 ## 🔥 **さらに詳しく学びたい方へ**
 
-### **[📝 techarm.dev ブログで完全解説を読む](https://techarm.dev/series/django)**
+**[📝 techarm.dev ブログで完全解説を読む](https://techarm.dev/series/django)**
 
 - 🎯 **図解豊富で初心者にも分かりやすい**
 - 💡 **実際のコードと一緒に詳しく解説**
 - ⚡ **躓きやすいポイントも丁寧にフォロー**
 - 🚀 **実践的なテクニックも多数紹介**
 
----
-
 **[🔗 最新記事をチェック](https://techarm.dev)**
 
-## 📞 質問・フィードバック
-
-チュートリアルについて質問がありましたら、各記事のコメント欄でお気軽にどうぞ！
-
----
+--- 
 
 <div align="center">
 
