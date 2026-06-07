@@ -28,7 +28,7 @@
 
 ### 前提条件
 
-- Python 3.8 以上
+- Python 3.12 以上（Django 6.0 の必須要件）
 - pip または pipenv
 
 ### セットアップ
